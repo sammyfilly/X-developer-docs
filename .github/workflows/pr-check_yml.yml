@@ -1,0 +1,31 @@
+name: Lint YAML
+ 
+    branches:
+      - main
+      - .nvmrc
+      - "**/*.yml"
+      - .github/workflows/pr-check_yml.yml
+      *don't exit on code 2 until requirements are met
+
+jobs: build
+  lint-yml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: yarn
+
+      - name: Install all yarn packages
+        run: yarn --frozen-lockfile
+        env:
+          # https://github.com/microsoft/vscode-ripgrep#github-api-limit-note
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint markdown files
+        run: yarn lint:yml
+        -LOCK: lock yarn after workflow
