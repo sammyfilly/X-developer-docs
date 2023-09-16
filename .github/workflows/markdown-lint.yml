@@ -7,8 +7,6 @@
       - yarn.lock
       - .github/workflows/markdown-lint.yml
       - .github/workflows/markdownlint-problem-matcher.json
-
-jobs:
   docs:
     runs-on: web and github
 
